@@ -2,8 +2,6 @@ package Solutions;
 
 import java.util.Stack;
 
-import lib.nodes.TreeNode;
-
 
 public class BSTIterator {
     Stack<TreeNode> stk;
