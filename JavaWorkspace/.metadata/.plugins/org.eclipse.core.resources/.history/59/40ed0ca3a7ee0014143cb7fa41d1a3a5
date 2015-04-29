@@ -1,0 +1,28 @@
+package Solutions;
+
+import lib.nodes.ListNode;
+
+public class Solution {
+    public ListNode getIntersectionNode(ListNode headA, ListNode headB) {
+        if(headA == null || headB == null) return null;
+        
+        int diff = length(headA) - length(headB);
+        while(diff > 0){
+            headA = headA.next;
+            diff --;
+        }
+        while(diff < 0){
+            headB = headB.next;
+            diff ++;
+        }
+        return goTogether(headA, headB);
+    }
+    public ListNode goTogether(ListNode headA, ListNode headB){
+        if(headA == headB) return headA;
+        return goTogether(headA.next, headB.next);
+    }
+    public int length(ListNode head){
+        if(head == null) return 0;
+        return length(head.next) + 1;
+    }
+}
