@@ -1,0 +1,209 @@
+package Solutions;
+
+import Solution.MaxGapNode;
+import lib.nodes.ListNode;
+
+public class Solution {
+	/**
+	 * Write a program to find the node at which the intersection of two singly linked lists begins.
+	 * For example, the following two linked lists:
+	 * A:          a1 → a2
+	 *    					↘
+	 *    					  c1 → c2 → c3
+	 *    					 ↗            
+	 * B:     b1 → b2 → b3
+	 * begin to intersect at node c1.
+	 * @param headA head of link list A
+	 * @param headB head of link list B
+	 * @return
+	 */
+    public ListNode getIntersectionNode(ListNode headA, ListNode headB) {
+        if(headA == null || headB == null) return null;
+        
+        int diff = length(headA) - length(headB);
+        while(diff > 0){
+            headA = headA.next;
+            diff --;
+        }
+        while(diff < 0){
+            headB = headB.next;
+            diff ++;
+        }
+        return goTogether(headA, headB);
+    }
+    public ListNode goTogether(ListNode headA, ListNode headB){
+        if(headA == headB) return headA;
+        return goTogether(headA.next, headB.next);
+    }
+    public int length(ListNode head){
+        if(head == null) return 0;
+        return length(head.next) + 1;
+    }
+    
+    public int compareVersion(String version1, String version2) {
+        String[] str1 = version1.split("\\.");
+        String[] str2 = version2.split("\\.");
+        
+        for(int i = 0; i < str1.length && i < str2.length; i++){
+            if(Integer.parseInt(str1[i]) == Integer.parseInt(str2[i])) continue;
+            if(Integer.parseInt(str1[i]) > Integer.parseInt(str2[i]))
+                return 1;
+            else
+                return -1;
+        }
+        if(str1.length == str2.length) return 0;
+        if(str1.length > str2.length) return 1;
+        else return -1;
+    }
+    
+    private class MaxGapNode{
+        private int size = 0;
+        private int min, max;
+        public MaxGapNode(){
+            min = Integer.MAX_VALUE;
+            max = Integer.MIN_VALUE;
+        }
+        public void add(int n){ 
+            size++;
+            if(n < min) min = n;
+            if(n > max) max = n;
+        }
+        public int size() { return size; }
+        public int getMin(){  return min; }
+        public int getMax(){  return max; }
+        
+    }
+    public int maximumGap(int[] num) {
+        if(num.length < 2) return 0;
+        int n = num.length;
+        
+        int min = Integer.MAX_VALUE, max = Integer.MIN_VALUE;
+        for(int i : num){
+            if(i < min) min = i;
+            if(i > max) max = i;
+        }
+        int delta = (max - min)/(n-1) + 1;
+        MaxGapNode[] buckets = new MaxGapNode[n-1];
+        for(int i = 0; i < n-1; i ++)
+            buckets[i] = new MaxGapNode();
+        for(int i : num){
+            if(i == min || i == max) continue;
+            int k = (i - min)/delta;
+            buckets[k].add(i);
+        }
+        int diff = 0;
+        int prev = min;
+        for(int i = 0; i < n-1; i++){
+            if(buckets[i].size() == 0) continue;
+            int d = buckets[i].getMin() - prev; 
+            if(diff < d) diff = d;
+            prev = buckets[i].getMax();
+        }
+        if(diff < (max - prev)) diff = max - prev;
+        return diff;
+    }
+    
+    public ListNode mergeTwoLists(ListNode l1, ListNode l2) {
+        ListNode head = null;
+        ListNode next = null;
+        while(l1 != null || l2 != null){
+        	ListNode tmp = null;
+            if(l1 == null){
+                tmp = l2;
+                l2 = l2.next;
+            }
+            else if(l2 == null){
+                tmp = l1;
+                l1 = l1.next;
+            }
+            else {
+                tmp = (l1.val > l2.val)? l2 : l1;
+                if (l1.val > l2.val)
+                    l2 = l2.next;
+                else
+                    l1 = l1.next;
+            }
+            
+            if(head == null){
+                head = tmp;
+                next = head;
+            }
+            else{
+            	next.next = tmp;
+                next = next.next;
+            }
+        }
+        return head;
+    }
+    
+    private int intValue(char c){
+        return c - '0';
+    }
+    private String add(String n1, String n2){
+        String ans = "";
+        int carryin = 0;
+        StringBuilder sb = new StringBuilder(n1);
+        String num1 = sb.reverse().toString();
+        sb = new StringBuilder(n2);
+        String num2 = sb.reverse().toString();
+        
+        int i = 0;
+        while(true){
+            int sum = 0;
+            if(i < num1.length() && i < num2.length()){
+                sum = intValue(num1.charAt(i)) + intValue(num2.charAt(i)) + carryin;
+                carryin = sum / 10;
+                ans = Integer.toString(sum % 10) + ans;
+            }
+            else if ( i < num1.length() ){
+                sum = intValue(num1.charAt(i)) +  carryin;
+                carryin = sum / 10;
+                ans = Integer.toString(sum % 10) + ans;
+            }
+            else if ( i < num2.length() ){
+                sum = intValue(num2.charAt(i)) +  carryin;
+                carryin = sum / 10;
+                ans = Integer.toString(sum % 10) + ans;
+            }
+            else{
+            	if(carryin > 0)
+            		ans = Integer.toString(carryin) + ans;
+                break;
+            }
+            i++;
+        }
+        
+        while(true){
+        	if(ans.isEmpty()) return "0";
+        	if(ans.charAt(0) == '0')
+        		ans = ans.substring(1);
+        	else
+        		break;
+        }
+        
+        return ans;
+    }
+    public String multiply(String num1, String num2) {
+        String[] multis = new String[num1.length()];
+        for(int i =0; i < num1.length(); i++){
+            char multiplier = num1.charAt(num1.length() - i - 1);
+            String temp = "";
+            int carryin = 0;
+            for(int j = num2.length()-1; j >= 0; j--){
+                char c = num2.charAt(j);
+                int m = intValue(c) * intValue(multiplier) + carryin;
+                temp = Integer.toString(m % 10) + temp;
+                carryin = m / 10;
+            }
+            if(carryin > 0)
+            	temp = Integer.toString(carryin) + temp;
+            for(int k = 0; k < i; k++)
+                temp = temp + "0";
+            multis[i] = temp;
+        }
+        String result = "0";
+        for(String str : multis)
+            result = add(str, result);
+        return result;
+    }
+}
