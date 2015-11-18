@@ -2,7 +2,7 @@ package SortedLinkedList;
 
 import java.util.Random;
 
-import lib.common.StopWatch;
+import MyLib.StopWatch;
 
 public class Test {
 
@@ -31,7 +31,7 @@ public class Test {
 		timer.start();
 		Solution sol = new Solution();
 		head = sol.sortList(pointer);
-		long duration = timer.stop();
+		String duration = timer.stop();
 		
 		while(head != null){
 			System.out.print(head.val + ", ");

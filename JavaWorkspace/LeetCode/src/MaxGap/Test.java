@@ -1,6 +1,6 @@
 package MaxGap;
 
-import lib.common.StopWatch;
+import MyLib.StopWatch;
 
 public class Test {
 	public static void main(String[] args){

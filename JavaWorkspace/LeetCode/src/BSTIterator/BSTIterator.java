@@ -2,7 +2,7 @@ package BSTIterator;
 
 import java.util.Stack;
 
-import lib.nodes.TreeNode;
+import MyLib.TreeNode;
 
 
 public class BSTIterator {

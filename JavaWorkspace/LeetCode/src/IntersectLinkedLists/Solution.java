@@ -1,6 +1,6 @@
 package IntersectLinkedLists;
 
-import lib.nodes.ListNode;
+import MyLib.ListNode;
 
 public class Solution {
 	/**
