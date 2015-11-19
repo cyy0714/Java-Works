@@ -3,10 +3,8 @@ package LeetCodes.Common;
 
 // Source: https://leetcode.com/problems/range-sum-query-mutable/
 public class NumArrayImmutable {
-	private int[] nums;
 	private int[] sums;
     public NumArrayImmutable(int[] nums) {
-        this.nums = nums;
         sums = new int[nums.length+1];
         sums[0] = 0;
         for(int i = 0; i < nums.length; i++){
