@@ -1,7 +1,62 @@
 package LeetCodes.Common;
 
+import java.util.Arrays;
+
 public class Solution {
 	public Solution(){}
+	
+	/**
+	 * Write a program to find the nth super ugly number.
+
+		Super ugly numbers are positive numbers whose all prime 
+		actors are in the given prime list primes of size k. For 
+		example, [1, 2, 4, 7, 8, 13, 14, 16, 19, 26, 28, 32] is 
+		the sequence of the first 12 super ugly numbers given 
+		primes = [2, 7, 13, 19] of size 4.
+		
+		Note:
+		(1) 1 is a super ugly number for any given primes.
+		(2) The given numbers in primes are in ascending order.
+		(3) 0 < k ≤ 100, 0 < n ≤ 106, 0 < primes[i] < 1000.
+	 * @param n The n-th usgly number
+	 * @param primes list of prime numbers
+	 * @return
+	 */
+	public long nthSuperUglyNumber(int n, int[] primes) {
+		int m = primes.length;
+		int[] primeIndex = new int[m];
+		long[] pendingUglyNumbers = new long[m];
+		long[] uglyNumbers = new long[n];
+		
+		uglyNumbers[0] = 1; // initialize the first ugly number
+
+		// Calculate the next possible uglyNumber
+		for(int j = 0; j < m; j++)
+			pendingUglyNumbers[j] = uglyNumbers[primeIndex[j]] * primes[j];
+		
+		for(int i = 1; i < n; i++){
+			// Find the minimum
+			int minIndex = 0;
+			for(int j = 0; j < m; j++){
+				// Remove Duplicate Answers
+				if(pendingUglyNumbers[j] == uglyNumbers[i-1]){ 
+					primeIndex[j]++;
+					pendingUglyNumbers[j] = uglyNumbers[primeIndex[j]] * primes[j];
+				}
+				if(pendingUglyNumbers[j] < pendingUglyNumbers[minIndex])
+					minIndex = j;
+			}
+			
+			uglyNumbers[i] = pendingUglyNumbers[minIndex];
+			primeIndex[minIndex]++;
+			pendingUglyNumbers[minIndex] = uglyNumbers[primeIndex[minIndex]] * primes[minIndex];
+			
+		}
+		
+//		System.out.println(Arrays.toString(uglyNumbers));
+		
+        return uglyNumbers[n-1];
+    }
 	
 	/**
 	 * 	Given an unsorted array of integers, 

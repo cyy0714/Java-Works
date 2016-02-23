@@ -60,6 +60,65 @@ public class Solution {
     }
     
     /**
+     * LeetCode 328 Odd Even LinkList
+     * Given a singly linked list, group all odd nodes together followed by the even nodes. Please note here we are talking about the node number and not the value in the nodes.
+	 * You should try to do it in place. The program should run in O(1) space complexity and O(nodes) time complexity.
+	 * 
+	 * Example:
+	 * Given 1->2->3->4->5->NULL,
+	 * return 1->3->5->2->4->NULL.
+	 * 
+	 * Note:
+	 * The relative order inside both the even and odd groups should remain as it was in the input. 
+	 * The first node is considered odd, the second node even and so on ...
+     * @param head head of the linklist
+     * @return odd-even list
+     */
+    public ListNode oddEvenList(ListNode head) {
+        ListNode oddTail = null, evenTail = null, reader =  head;
+        ListNode oddHead = null, evenHead = null;
+        
+        while(reader != null){
+        	ListNode tmp = reader;
+        	reader = reader.next;
+        	
+        	if(tmp.val % 2 == 1){// is odd
+        		if(oddHead == null){
+        			oddHead = tmp;
+        			oddTail = tmp;
+        		}
+        		else{
+        			oddTail.next = tmp;
+        			oddTail = tmp;
+        		}
+        	}
+        	else{ // is even
+        		if(evenHead == null){
+        			evenHead = tmp;
+        			evenTail = tmp;
+        		}
+        		else{
+        			evenTail.next = tmp;
+        			evenTail = tmp;
+        		}
+        	}
+        	
+        }
+        
+        if(oddTail != null){
+            oddTail.next = evenHead;
+            if(evenTail != null){
+                evenTail.next = null;
+            }
+        }
+        else{
+            oddHead = evenHead;
+        }
+        
+        return oddHead;
+    }
+    
+    /**
      * Merge Two Sorted LinkedList
      */
     public ListNode mergeTwoLists(ListNode l1, ListNode l2) {
@@ -98,11 +157,11 @@ public class Solution {
     /**
 	 * Write a program to find the node at which the intersection of two singly linked lists begins.
 	 * For example, the following two linked lists:
-	 * A:          a1 → a2
-	 *    					↘
-	 *    					  c1 → c2 → c3
-	 *    					 ↗            
-	 * B:     b1 → b2 → b3
+	 * A:          a1 ��� a2
+	 *    					���
+	 *    					  c1 ��� c2 ��� c3
+	 *    					 ���            
+	 * B:     b1 ��� b2 ��� b3
 	 * begin to intersect at node c1.
 	 * @param headA head of link list A
 	 * @param headB head of link list B
