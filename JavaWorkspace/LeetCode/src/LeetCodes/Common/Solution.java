@@ -6,6 +6,57 @@ public class Solution {
 	public Solution(){}
 	
 	/**
+	 * 334. Increasing Triplet Subsequence
+	 * Given an unsorted array return whether an increasing subsequence of length 3 exists or not in the array.
+	
+	 * Formally the function should:
+	 * Return true if there exists i, j, k 
+	 * such that arr[i] < arr[j] < arr[k] given 0 <= i < j < k <= n-1 else return false.
+	 * Your algorithm should run in O(n) time complexity and O(1) space complexity.
+	
+	 * Examples:
+	 * Given [1, 2, 3, 4, 5],
+	 * return true.
+	
+	 * Given [5, 4, 3, 2, 1],
+	 * return false.
+	 * @param nums integer array
+	 * @return if the array contains increasing triplet subsequence
+	 */
+    public boolean increasingTriplet(int[] nums) {
+        int[] arr = new int[nums.length];
+        if(nums.length == 0) return false;
+        arr[0] = 1;
+        for(int i = 1; i < nums.length; i++){
+            arr[i] = 1;
+            for(int j = 0; j <= i - 1; j ++){
+                if(nums[j] < nums[i])
+                    arr[i] = Math.max(arr[j] + 1, arr[i]);
+                if(arr[i] == 3) return true;
+            }
+        }
+        return false;
+    }
+    public boolean increasingTripletFaster(int[] nums) {
+    	int x = Integer.MAX_VALUE;
+    	int y = Integer.MAX_VALUE;
+     
+    	for (int i = 0; i < nums.length; i++) {
+    		int z = nums[i];
+     
+    		if (x >= z) {
+    			x = z;
+    		} else if (y >= z) {
+    			y = z;
+    		} else {
+    			return true;
+    		}
+    	}
+     
+    	return false;
+    }
+	
+	/**
 	 * Write a program to find the nth super ugly number.
 
 		Super ugly numbers are positive numbers whose all prime 
